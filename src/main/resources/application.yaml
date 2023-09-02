@@ -1,0 +1,80 @@
+spring:
+  application:
+    name: DentistMain-service
+  profiles:
+    active: localhost
+  main:
+    allow-bean-definition-overriding: true
+info:
+  component: Product Service
+
+
+server:
+  port: 9788
+logging:
+  level:
+    root:
+    com.eleiatech: DEBUG
+---
+spring:
+  profiles: localhost
+  cloud:
+    config:
+      uri: http://localhost:8888
+  jpa:
+    hibernate:
+      ddl-auto: none
+    database-platform: org.hibernate.dialect.PostgreSQLDialect
+    properties:
+      hibernate:
+        default_schema: dentist_main
+    show-sql: true
+    open-in-view: false
+  datasource:
+    url: "jdbc:postgresql://localhost:5432/dentist_main?searchpath=public"
+    username: postgres
+    password: 12345
+
+  flyway:
+    baseline-on-migrate: true
+    locations: classpath:db/migration
+
+
+---
+spring:
+  profiles: stage
+  jpa:
+    hibernate:
+      ddl-auto: none
+    database-platform: org.hibernate.dialect.PostgreSQLDialect
+    properties:
+      hibernate:
+        default_schema: dentist_main
+    show-sql: true
+    open-in-view: false
+  datasource:
+    url: "jdbc:postgresql://localhost:5432/dentist_main?searchpath=public"
+    username: postgres
+    password: 12345
+
+
+
+---
+app:
+  jwt:
+    secret: RandomSecretKey
+    expiration-in-ms: 86400000
+authentication:
+  internal-api-key: InternalApiKey1234!
+spring:
+  main:
+    allow-circular-references: true
+
+---
+#spring:
+#  flyway:
+#    url: jdbc:postgresql://localhost:5432/dentist_main?currentSchema=public
+#    schemas: stock_management
+#    user: postgres
+#    password: 12345
+
